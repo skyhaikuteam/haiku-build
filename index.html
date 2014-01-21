@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Haiku Dashboard</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/underscore.js" charset="utf-8"></script>
+    <style type="text/css">
+        body {
+            background-color: black;
+            color: white;
+            font-size: 2em;
+            font-family: "Helvetica"    
+        }
+        
+
+        #projects div {
+            float: left;
+            margin: 1em;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="projects">
+    </div>
+
+<script type="text/javascript">
+    
+
+    function statusColor(status){
+        switch (status){
+            case "success":
+                return "green";
+            case "failed":
+                return "red";
+        }
+    }
+
+    function visualizeit(data){
+        d3.select("#projects").selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+        .style("background-color", function(d){
+            var branch = d.branches[d.default_branch];
+            return statusColor(branch.recent_builds[0].outcome);
+        })
+        .append("p")
+        .text(function(d){
+            console.log(d);
+            return d.vcs_url.split('/').pop();
+        });
+    }
+
+
+    var data;
+
+    var circleToken = //circle token should go here
+
+    var url = "https://circleci.com/api/v1/projects?circle-token=" + circleToken
+
+    d3.json(url, function(error, json) {
+      if (error) return console.warn(error);
+      data = json;
+      visualizeit(data);
+    });
+</script>
+
+</body>
+</html>
