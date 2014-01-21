@@ -54,10 +54,9 @@
         });
     }
 
-
     var data;
 
-    var circleToken = //circle token should go here
+    var circleToken = window.location.search.match(/circleToken=(.+)/)[1]; //circle token should go here
 
     var url = "https://circleci.com/api/v1/projects?circle-token=" + circleToken
 
