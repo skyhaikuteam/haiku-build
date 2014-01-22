@@ -49,7 +49,7 @@
         })
         .append("p")
         .text(function(d){
-            console.log(d);
+            // console.log(d);
             return d.vcs_url.split('/').pop();
         });
     }
@@ -58,13 +58,16 @@
 
     var circleToken = window.location.search.match(/circleToken=(.+)/)[1]; //circle token should go here
 
-    var url = "https://circleci.com/api/v1/projects?circle-token=" + circleToken
+    var url = "https://circleci.com/api/v1/projects?circle-token=" + circleToken;
 
-    d3.json(url, function(error, json) {
-      if (error) return console.warn(error);
-      data = json;
-      visualizeit(data);
-    });
+    (function getProjectStatuses(){
+        d3.json(url, function(error, json) {
+          if (error) return console.warn(error);
+          data = json;
+          visualizeit(data);
+        });
+        setTimeout(getProjectStatuses, 10000);
+    })();
 </script>
 
 </body>
