@@ -4,7 +4,7 @@
 <head>
     <title>Haiku Dashboard</title>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/underscore.js" charset="utf-8"></script>
+    <script src="/js/underscore.js" charset="utf-8"></script>
     <style type="text/css">
         body {
             background-color: black;
@@ -45,7 +45,9 @@
         .append("div")
         .style("background-color", function(d){
             var branch = d.branches[d.default_branch];
-            return statusColor(branch.recent_builds[0].outcome);
+            if(branch.recent_builds){
+              return statusColor(branch.recent_builds[0].outcome);
+            }
         })
         .append("p")
         .text(function(d){
