@@ -17,13 +17,28 @@
           margin: 40px 27px 11px;
         }
 
-        #projects div {
-            float: left;
-            margin: 1em;
-            padding: 1em;
-            border-radius: 15px;
-            min-width: 200px;
-            text-align: center;
+        .project {
+          position: relative;
+          float: left;
+          margin: 1em;
+          padding: 1em;
+          border-radius: 15px;
+          min-width: 200px;
+          text-align: center;
+        }
+
+        .badge {
+          width: 37px;
+          height: 37px;
+          background-color: #3498DB;
+          position: absolute;
+          bottom: -22px;
+          right: -22px;
+          min-width: 0;
+          border-radius: 100px;
+          margin: 0;
+          padding: 10px;
+          border: solid 1px white;
         }
     </style>
 </head>
@@ -52,20 +67,35 @@
         .data(data)
         .enter()
         .append("div")
+        .property('className', 'project')
         .style("background-color", function(d){
             var branch = d.branches[d.default_branch];
             if(branch.running_builds && branch.running_builds.length > 0){return "#f1c40f"}
             if(branch.recent_builds){
               return statusColor(branch.recent_builds[0].outcome);
-              } else {
+            } else {
               return "#95a5a6"
-              }
+            }
         })
         .append("p")
         .text(function(d){
             // console.log(d);
             return d.vcs_url.split('/').pop();
-        });
+        })
+        .append("div")
+        .filter(function(d){
+            var branch = d.branches[d.default_branch];
+            if(branch.running_builds && branch.running_builds.length > 1){return branch.running_builds.length;}
+        })
+        .text(function(d){
+            var branch = d.branches[d.default_branch];
+            if(branch.running_builds && branch.running_builds.length > 1){
+              return branch.running_builds.length;
+            } else {
+              return null;
+            }
+        })
+        .property('className', 'badge');
     }
 
     var data;
