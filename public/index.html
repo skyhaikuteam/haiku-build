@@ -47,6 +47,7 @@
     }
 
     function visualizeit(data){
+        d3.select("#projects").selectAll("div").remove();
         d3.select("#projects").selectAll("div")
         .data(data)
         .enter()
