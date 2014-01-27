@@ -34,6 +34,8 @@
                 return "green";
             case "failed":
                 return "red";
+            case "canceled":
+                return "grey";
         }
     }
 
@@ -44,9 +46,12 @@
         .append("div")
         .style("background-color", function(d){
             var branch = d.branches[d.default_branch];
+            if(branch.running_builds && branch.running_builds.length > 0){return "yellow"}
             if(branch.recent_builds){
               return statusColor(branch.recent_builds[0].outcome);
-            }
+              } else {
+              return "grey"
+              }
         })
         .append("p")
         .text(function(d){
